@@ -1,0 +1,17 @@
+trigger:
+- azure-pipelines-cicd
+
+pool:
+ vmImages: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs: 
+    versionSpec: "18.0"
+  displayName: Install NodeJS
+  timeoutInMinutes: 120
+
+- script: |
+    npm install
+    npm build
+  displayName: Npm Install and Build
