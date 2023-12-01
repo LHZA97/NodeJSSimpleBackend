@@ -1,5 +1,5 @@
 trigger:
-- azure-pipelines-cicd
+- main
 
 pool:
  vmImages: 'ubuntu-latest'
