@@ -1,24 +1,17 @@
-# Node.js
-# Build a general Node.js project with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
-- main
+- azure-pipelines-cicd
 
 pool:
-  vmImage: ubuntu-latest
+ vmImages: 'ubuntu-latest'
 
-stages:
-- stage: CI
-  jobs:
-  - job: CIWork
-    steps:
-    - script: "echo pwd"
+steps:
+- task: NodeTool@0
+  inputs: 
+    versionSpec: "18.0"
+  displayName: Install NodeJS
+  timeoutInMinutes: 120
 
-- stage: Test
-  jobs:
-  - job: TestWork
-    steps:
-    - script: "echo ls"
-
+- script: |
+    npm install
+    npm build
+  displayName: Npm Install and Build
