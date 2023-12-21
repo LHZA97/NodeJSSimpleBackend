@@ -1,17 +1,31 @@
 trigger:
 - main
 
-pool:
- vmImages: 'ubuntu-latest'
+variables:
+  dockerRegistryServiceConnection: 'acrenv.azurecr.io'
+  imageRepository: 'NodeJSSimpleBackend'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
 
-steps:
-- task: NodeTool@0
-  inputs: 
-    versionSpec: "18.0"
-  displayName: Install NodeJS
-  timeoutInMinutes: 120
+stages:
+- stage: Build
+  displayName: Build and publish stage
+  jobs:
+  - job: Build
+    displayName: Build job
+    pool:
+      name: 'RUNNER-LINUX'
+    steps:
+    - task: DockerInstaller@0
+      inputs:
+        dockerVersion: '17.09.0-ce'
 
-- script: |
-    npm install
-    npm build
-  displayName: Npm Install and Build
+    - task: Docker@2
+      displayName: Build and publish image to Azure Container Registry
+      inputs:
+        command: buildAndPush
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        tags: |
+          $(tag)
