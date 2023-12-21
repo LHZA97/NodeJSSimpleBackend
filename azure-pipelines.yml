@@ -2,7 +2,7 @@ trigger:
 - main
 
 variables:
-  dockerRegistryServiceConnection: 'acrenv.azurecr.io'
+  dockerRegistryServiceConnection: 'acrenv'
   imageRepository: 'NodeJSSimpleBackend'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
